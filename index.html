@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lemonade Stand: Summer Splash</title>
+    <link rel="stylesheet" href="styles/style.css" />
+  </head>
+  <body>
+    <div class="game-container">
+      <!-- Game Header -->
+      <header class="game-header">
+        <h1>🍋 Lemonade Stand: Summer Splash 🌞</h1>
+        <div class="game-stats">
+          <div class="stat">
+            <span class="stat-label">Day:</span>
+            <span id="current-day">1</span> / 84
+          </div>
+          <div class="stat">
+            <span class="stat-label">Week:</span>
+            <span id="current-week">1</span> / 12
+          </div>
+          <div class="stat">
+            <span class="stat-label">Money:</span>
+            $<span id="current-money">50.00</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Total Profit:</span>
+            $<span id="total-profit">0.00</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Weather Display -->
+      <div class="weather-section">
+        <div class="weather-card">
+          <div class="weather-icon" id="weather-icon">☀️</div>
+          <div class="weather-info">
+            <h3 id="weather-description">Sunny Day</h3>
+            <p id="weather-temp">78°F</p>
+            <p id="weather-forecast">Perfect weather for lemonade!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Content -->
+      <main class="game-main">
+        <!-- Supply Purchase Section -->
+        <div class="game-section supplies-section">
+          <h2>🛒 Buy Supplies</h2>
+          <div class="supplies-grid">
+            <div class="supply-item">
+              <div class="supply-icon">🍋</div>
+              <h3>Lemons</h3>
+              <p>Cost: $<span id="lemon-cost">0.15</span> each</p>
+              <p>Have: <span id="lemon-count">0</span></p>
+              <div class="supply-controls">
+                <button onclick="buySupply('lemons', -10)">-10</button>
+                <button onclick="buySupply('lemons', -1)">-1</button>
+                <input
+                  type="number"
+                  id="lemon-buy"
+                  min="0"
+                  value="0"
+                  max="100"
+                />
+                <button onclick="buySupply('lemons', 1)">+1</button>
+                <button onclick="buySupply('lemons', 10)">+10</button>
+              </div>
+            </div>
+
+            <div class="supply-item">
+              <div class="supply-icon">🥤</div>
+              <h3>Cups</h3>
+              <p>Cost: $<span id="cup-cost">0.05</span> each</p>
+              <p>Have: <span id="cup-count">0</span></p>
+              <div class="supply-controls">
+                <button onclick="buySupply('cups', -10)">-10</button>
+                <button onclick="buySupply('cups', -1)">-1</button>
+                <input type="number" id="cup-buy" min="0" value="0" max="100" />
+                <button onclick="buySupply('cups', 1)">+1</button>
+                <button onclick="buySupply('cups', 10)">+10</button>
+              </div>
+            </div>
+
+            <div class="supply-item">
+              <div class="supply-icon">🍬</div>
+              <h3>Sugar</h3>
+              <p>Cost: $<span id="sugar-cost">0.10</span> each</p>
+              <p>Have: <span id="sugar-count">0</span></p>
+              <div class="supply-controls">
+                <button onclick="buySupply('sugar', -10)">-10</button>
+                <button onclick="buySupply('sugar', -1)">-1</button>
+                <input
+                  type="number"
+                  id="sugar-buy"
+                  min="0"
+                  value="0"
+                  max="100"
+                />
+                <button onclick="buySupply('sugar', 1)">+1</button>
+                <button onclick="buySupply('sugar', 10)">+10</button>
+              </div>
+            </div>
+          </div>
+          <div class="supply-total">
+            <strong>Total Cost: $<span id="supply-total">0.00</span></strong>
+          </div>
+        </div>
+
+        <!-- Pricing Section -->
+        <div class="game-section pricing-section">
+          <h2>💰 Set Your Price</h2>
+          <div class="price-controls">
+            <label for="price-slider"
+              >Price per cup: $<span id="price-display">0.50</span></label
+            >
+            <input
+              type="range"
+              id="price-slider"
+              min="0.25"
+              max="2.00"
+              step="0.05"
+              value="0.50"
+            />
+            <div class="price-markers">
+              <span>$0.25</span>
+              <span>$1.00</span>
+              <span>$2.00</span>
+            </div>
+          </div>
+          <div class="price-info">
+            <p id="price-advice">
+              Moderate pricing - good balance of sales and profit!
+            </p>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="game-section actions-section">
+          <button id="start-day-btn" class="start-day-btn" onclick="startDay()">
+            🏁 Start Selling Today!
+          </button>
+          <button
+            id="next-day-btn"
+            class="next-day-btn"
+            onclick="nextDay()"
+            style="display: none"
+          >
+            ➡️ Next Day
+          </button>
+        </div>
+      </main>
+
+      <!-- Results Modal -->
+      <div id="results-modal" class="modal" style="display: none">
+        <div class="modal-content">
+          <h2>📊 Daily Results</h2>
+          <div id="results-content">
+            <!-- Results will be populated by JavaScript -->
+          </div>
+          <button onclick="closeResults()" class="modal-close-btn">
+            Continue
+          </button>
+        </div>
+      </div>
+
+      <!-- Game Over Modal -->
+      <div id="game-over-modal" class="modal" style="display: none">
+        <div class="modal-content">
+          <h2>🎉 Summer Complete!</h2>
+          <div id="final-results">
+            <!-- Final results will be populated by JavaScript -->
+          </div>
+          <button onclick="restartGame()" class="modal-close-btn">
+            Play Again
+          </button>
+        </div>
+      </div>
+
+      <!-- Tips Marquee -->
+      <div class="tips-marquee">
+        <div class="marquee-content" id="tips-marquee">
+          💡 Tip: Watch the weather forecast - hot days mean more customers!
+        </div>
+      </div>
+    </div>
+
+    <script src="src/app.js"></script>
+  </body>
+</html>
